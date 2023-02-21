@@ -1,0 +1,46 @@
+MemberController도 SpringConfig에 @Been으로 등록 시켜놓으면 왜 동작하지 않는거지 첫 컴포넌트는 무조건 컴포넌트 스캔으로 등록해놔야하는건가?
+
+=> 수동주입시에는 스프링 컨테이너를 생성해야함
+
+ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+
+생성시 하위 객체들이 스프링 빈으로 등록이됨 //
+
+당시에는 위처럼 스프링 컨테이너를 수동으로 생성하지 않았음
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+(중요!!) 스프링 컨테이너는 싱글톤 컨테이너이기 때문에 객체를 모두 공유한다. 따라서 전역에 변수를 두어 공용 필드를 사용해선 안된다.
+그렇기 때문에 웬만하면 파라미터와 리턴값으로 해결을 해야한다. + 상태를 유지하고자 하는 변수는 final로 선언
+
+@Qualifier 와 롬복 라이브러리의 생성자는 같이 사용을 못하는 건가?
+
+기술 지원 객체 중 "스프링 부트의 경우 DataSource 같은 데이터베이스 연결에 사용하는 기술 지원 로직까지 내부에서 자동으로 등록하는데"
+=> 어떻게 자동 등록하는건지 모르겠음..
+
+비즈니스 로직 중에서 다형성을 적극 활용할 때
+=> DiscountPolicy 의 다형성을 위해 현재 자동 등록된 두 클래스 fixDiscountPolicy, rateDiscountPolicy를 어떻게 수동 등록해야하는 지 모르겠음
+
+@Configuration
+public class DiscountPolicyConfig {
+
+ @Bean
+ public DiscountPolicy rateDiscountPolicy() {
+ return new RateDiscountPolicy();
+ }
+ @Bean
+ public DiscountPolicy fixDiscountPolicy() {
+ return new FixDiscountPolicy();
+ }
+}
+
+이걸 두개를 이렇게 두고... 어떻게 해야하지, 넘 추상적이라서 이해가 어렵다..
+
+빈 생명주기 콜백에서 외부라이브러리 초기화, 종료가 정확이 무엇을 말하는지 모르겠음.. 초기화해야하는 외부라이브러리가 여러개라면?
+
+웹스코프란?
+
+싱글톤과 멀티스레드 => 싱글톤이라면 객체가 하나일텐데 대량으로 많은 요청이 들어오면 어떻게 처리하지? 멀티스레드를 쓰나? 모르겟..
+
+의존관계 조회시(DL) 3가지의 방법의 차이를 크게 모르겠음 (ac, ObjectProvider, jsr-330 provider)
+=> 어쨋든 스프링 컨테이너를 거치는 거니 무겁고 테스트에 힘든거 아닐까?

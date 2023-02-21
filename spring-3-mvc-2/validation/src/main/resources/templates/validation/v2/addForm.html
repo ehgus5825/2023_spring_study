@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error{
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2 th:text="#{page.addItem}">상품 등록</h2>
+    </div>
+
+    <form action="item.html" th:action th:object="${item}" method="post">
+
+        <!-- V2 핵심 -->
+        <!-- 타임리프는 V1 -> V2 에서 종결 -->
+        <!--
+            - 타임리프는 스프링의 BindingResult를 활용
+            - #fields : #fields 로 BindingResult 가 제공하는 검증 오류에 접근할 수 있다.
+            - th:errors : 해당 필드에 오류가 있는 경우에 태그를 출력한다. th:if 의 편의 버전이다.
+            - th:errorclass : th:field 에서 지정한 필드에 오류가 있으면 class 정보를 추가한다.
+
+            글로벌 오류 :
+
+            // V1 : "${errors?.containsKey('globalError')}" / th:text="${errors['globalError']}"
+            // V2 : "${#fields.hasGlobalErrors()}"          / th:each="err : ${#fields.globalErrors()}" th:text="${err}"
+            // #fields 객체 자체가 BindingResult임. 그렇기 때문에 객체 전체를 받고 거기서 글로벌 에러를 하나씩 뽑아서 사용하면 됨.
+
+            필드 오류 :
+
+            // V1 : th:class="${errors?.containsKey('itemName')} ? 'form-control field-error' : 'form-control'"
+            // V2 : th:errorclass="field-error"
+            // => 해당 태그의 th:field 속성과 매핑된 오류가 있는지 확인하여 class를 추가해줌
+
+            // V1 : th:if="${errors?.containsKey('itemName')}" th:text="${errors['itemName']}"
+            // V2 : th:errors="*{itemName}"
+            // => itemName 필드에 오류가 있는지 확인하여 태그 렌더링 여부 확인 (th:if) => 필드의 오류를 th:text로 하여 화면에 출력
+
+            - th:field 값과 연계해서 사용할 수 있는 이유는 @ModelAttribute와 BindingResult의 객체명과 필드명이 연동되어 있기 때문
+            - ex) item.itemName
+
+            - th:field는 정상 상황에는 모델 객체의 값을 사용하지만, 오류가 발생하면 FieldError에서 보관한 값을 사용해서 값을 출력한다.
+            - => 그렇기 때문에 입력 폼으로 돌아 왔을때 이전에 보냈던 값을 사용할 수 있음 (FieldError에서 값을 보관하고 있음)
+            - => 그렇다면 V1 때는 그냥 사용하지 않았는가? 그떄는 공식적인 Error 도구를 사용하지 않았기 때문에 정상,비정상에 대한 개념이 없음.
+            - => 그래서 그냥 출력했던 것임.
+
+            - 추가적으로 타입 오류가 발생했을 때는 거절된 값을 사용할 수 없음, 하지만 FieldError는 거절된 값도 가지고 있기 때문에 사용할 수 있음.
+        -->
+
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error" th:each="err : ${#fields.globalErrors()} " th:text="${err}">전체 오류 메시지</p>
+        </div>
+
+        <div>
+            <label for="itemName" th:text="#{label.item.itemName}">상품명</label>
+            <input type="text" id="itemName" th:field="*{itemName}" placeholder="이름을 입력하세요"
+                   th:errorclass="field-error" class="form-control">
+            <div class="field-error" th:errors="*{itemName}" >상품명 오류</div>
+        </div>
+        <div>
+            <label for="price" th:text="#{label.item.price}">가격</label>
+            <input type="text" id="price" th:field="*{price}" placeholder="가격을 입력하세요"
+                   th:errorclass="field-error" class="form-control">
+            <div class="field-error" th:errors="*{price}">가격 오류</div>
+        </div>
+        <div>
+            <label for="quantity" th:text="#{label.item.quantity}">수량</label>
+            <input type="text" id="quantity" th:field="*{quantity}" placeholder="수량을 입력하세요"
+                   th:errorclass="field-error" class="form-control">
+            <div class="field-error" th:errors="*{quantity}">수량 오류</div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="#{button.save}">상품 등록</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='items.html'"
+                        th:onclick="|location.href='@{/validation/v2/items}'|"
+                        type="button" th:text="#{button.cancel}">취소</button>
+            </div>
+        </div>
+
+    </form>
+
+</div> <!-- /container -->
+</body>
+</html>

@@ -1,0 +1,65 @@
+스프링 입문 실습 정리
+
+- 실습 후기
+
+여러 Cotroller에서 매핑 주소에 따라 알아서 찾는 건가? 주소가 중복되면 어떻게 되는거지?
+
+MemberForm이 자동으로 작동하는게 신기하고 궁금함 어떤 원리로 돌아가는거지?
+
+MemberController도 SpringConfig에 @Been으로 등록 시켜놓으면 왜 동작하지 않는거지 첫 컴포넌트는 무조건 컴포넌트 스캔으로 등록해놔야하는건가?
+
+SpringDataJPA 부터 잘 모르 SpringConfig의 내용을 잘 모르겠음..
+그전엔 의존관계가 MemberController -> MemberService -> MemberRepository 였고
+MemberRepository의 구현체가 "memory -> jdbc -> jdbcTemplate -> jap" 로 바껴가면서
+생성자에 삽입해야할 값들을 jdbc, jdbcTemplate는 dataSource, jpa는 EntityManager로 변경되는 것까진 OK
+근데 다음으로 스프링데이터jpa가 자동으로 조합하여 SpringConfig의 내용을 바꾼것은 이해가 안감
+
+memory -> jdbc -> jdbcTemplate -> jap -> springDataJpa
+
+편하긴하지만 스프링데이터jpa가 작동하는 원리를 모르겠음... 사용법도 잘 이해가 안감
+
+SpringConfig에서 생성자로 dataSource나 EntityManager를 가져오는 것과 그것이 Autowired로 연결되는 것이 어떤건지 잘 모르겠음
+
+jpa의 작동원리도 궁금함. 빨리 배우고싶음
+
+html은 딱히 궁금한 점은 없음. 하지만 thymeleaf도 jsp와 비교하여 배워두면 좋을 것 같음
+
+aop는 프록시를 만들어서 처리한다음 joinPoint.proceed()을 실행해 정상 로직을 실행함. 뭔가 마치 서블릿 필터를 배웠을 때랑 비슷한 것 같음..
+세부적으로 파악을 해볼 예정
+
+스프링부트로 실행하지 않는다면 실제로 컴포넌트 스캔하도록 등록했던 객체들을 실제로 생성해줘야함?..? 그런듯?
+
+- 어노테이션 정리
+
+ㄴ AOP
+@Aspect
+@Around("execution(* hello.hellospring..*(..))")
+
+ㄴ DI
+@SpringBootApplication
+@Component
+- @Controller
+- @Repository
+- @Service
+@Autowired
+@Configuration
+@Bean
+
+ㄴ MVC
+@PostMapping("/members/new")
+@GetMapping("hello")
+@RequestParam("name")
+@ResponseBody
+
+ㄴ JPA
+@Entity
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+@Transactional
+
+ㄴ TEST
+@SpringBootTest
+@Transactional
+@Test
+@BeforeEach
+@AfterEach

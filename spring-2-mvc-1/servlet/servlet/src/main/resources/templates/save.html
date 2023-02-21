@@ -1,0 +1,15 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta charset="UTF-8">
+ <title>Title</title>
+</head>
+<body>
+성공
+<ul>
+ <li th:text="|id=${member.id}|">회원 id</li>
+ <li th:text="|username=${member.username}|">회원 이름</li>
+ <li th:text="|age=${member.age}|">회원 나이</li>
+</ul>
+<a href="/index.html">메인</a>
+</body>
+</html>

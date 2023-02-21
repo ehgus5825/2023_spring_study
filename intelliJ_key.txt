@@ -1,0 +1,28 @@
+// 테스트 클래스 생성 단축키 (MemberService 옆에서 ctrl + shift + T)
+// refactor this 메뉴 열기 (shift + ctrl + alt + t)
+// 메소드 추출 (ctrl + alt + m)
+// 반환하는 변수를 자동 완성해줌 (ctrl + alt + v)
+// 시스템 출력 (soutv 단축키)
+// static import로 변경, 람다로 변경 (Alt + Enter)
+// 변수이름 일괄 변경 (shift + f6)
+// 파일, 패키지, 생성자, 게터, 세터 ... 등등 생성 (Alt + insert)
+// 주석처리 : Ctrl+/(한 줄 주석), Ctrl+Shift+/(블록 주석)
+// 코드 펼치기 : Ctrl + + or =
+// 코드 전체 펼치기 : Ctrl + Shift + + or =
+// 코드 접기 : Ctrl + -
+// 코드 전체 접기 : Ctrl + Shift + -
+// 인라인 으로 변경 : ctrl + alt + n
+// 사이드의 프로젝트 열고 닫기 (Alt + 1)
+// 문장 자동완성 : ctrl + shift + enter
+// 오류가 난곳으로 바로 이동 : F2
+// 주석 템플릿 ? : "/**"
+// for-each문 자동 완성 : iter + Tab
+// 클래스 찾기 : shift * 2
+// 디렉토리 하위 문장 일괄 변경 : 디렉토리에서 ctrl + shift + r 
+// 문장 변경 : 특정 파일에서 ctrl + r 
+// 오버라이드 단축키 : ctrl + o
+// 상수 정의 단축키 : ctrl + alt + c
+// 행 복사 : ctrl + d
+// 컬럼 선택 모드 : ctrl + ctrl 꾹 누르고 방향키
+// + 일괄 단어 끝까지 이동 : ctrl + shift + ->
+// 자동 정렬 ctrl + alt+ l

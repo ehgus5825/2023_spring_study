@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2>상품 등록 폼</h2>
+    </div>
+
+    <form action="item.html" th:action th:object="${item}" method="post">
+
+        <!-- object(객체) -> field(속성) -->
+        <!-- field 값 하나로 id, name, value가 다 대체됨 -->
+
+        <div>
+            <label for="itemName">상품명</label>
+            <input type="text" id="itemName" th:field="*{itemName}" class="form-control" placeholder="이름을 입력하세요">
+        </div>
+        <div>
+            <label for="price">가격</label>
+            <input type="text" id="price" th:field="*{price}"class="form-control" placeholder="가격을 입력하세요">
+        </div>
+        <div>
+            <label for="quantity">수량</label>
+            <input type="text" id="quantity" th:field="*{quantity}" class="form-control" placeholder="수량을 입력하세요">
+        </div>
+
+        <hr class="my-4">
+
+        <!-- single checkbox -->
+        <!-- true & null 이슈 => 히든 태그 => true&false => 히든 태그 불편 => 타임리프 폼 기능 해결 -->
+        <!-- th:field 속성만 넣어주면 됨 / ex) th:field="*{open}" -->
+        <!-- 알아서 히든 태그를 만들어줌, id(변수명), name(변수명), value(변수 값)도 만들어줌 -->
+        <!-- 또한 값이 true인 경우에 자동으로 checked="checked" 처리해줌 / if문으로 고생할 필요 X -->
+
+        <div>판매 여부</div>
+        <div>
+            <div class="form-check">
+                <input type="checkbox" id="open" th:field="*{open}" class="form-check-input">
+                <label for="open" class="form-check-label">판매 오픈</label>
+            </div>
+        </div>
+
+        <!-- multi checkbox -->
+        <!-- 알아서 히든 태그를 만들어줌, id(변수명), name(변수명), value(변수 값)도 만들어줌 -->
+        <!-- 앞의 매커니즘과 동일하게 서버로 값이 감 -->
+        <!-- #ids.prev('regions')를 통한 for 값 동적 생성 -->
+        <!-- 또한 값이 true인 경우에 자동으로 checked="checked" 처리해줌 / if문으로 고생할 필요 X -->
+
+        <div>
+            <div>등록 지역</div>
+            <div th:each="region : ${regions}" class="form-check form-check-inline">
+                <input type="checkbox" th:field="*{regions}" th:value="${region.key}" class="form-check-input">
+                <label th:for="${#ids.prev('regions')}"
+                       th:text="${region.value}" class="form-check-label">서울</label>
+            </div>
+        </div>
+
+        <!-- radio button -->
+        <!-- ${T(hello.itemservice.domain.item.ItemType).values()} 하면 자바 코드에서 @ModelAttribute로 빼낸 것과 동일함 -->
+        <!-- 라디오 필드는 무조건 하나의 선택지는 선택이 되어 있어야하기 때문에 히든 필드가 필요가 없다.-->
+        <!-- ENUM은 자체적으로 name() 메소드를 지니고 있음 -> 객체명 -->
+        <!-- ENUM에 대해서 모르는 게 많은 것 같아서 공부가 조금 필요해보인다. -->
+
+        <div>
+            <div>상품 종류</div>
+            <div th:each="type : ${itemTypes}" class="form-check form-check-inline">
+                <input type="radio" th:field="*{itemType}" th:value="${type.name()}" class="form-check-input">
+                <label th:for="${#ids.prev('itemType')}" th:text="${type.description}" class="form-check-label">
+                    BOOK
+                </label>
+            </div>
+        </div>
+
+        <!-- SELECT -->
+        <!-- th:field="*{deliveryCode}"는 값을 서버에 보내기위한 name 값을 지정하기 위함-->
+        <!-- th:each가 option 태그의 상위 계층에 있어야하는 것이 아닌가? -->
+
+        <div>
+            <div>배송 방식</div>
+            <select th:field="*{deliveryCode}" class="form-select">
+                <option value="">==배송 방식 선택==</option>
+                <option th:each="deliveryCode : ${deliveryCodes}" th:value="${deliveryCode.code}"
+                        th:text="${deliveryCode.displayName}">FAST</option>
+            </select>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit">상품 등록</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='items.html'"
+                        th:onclick="|location.href='@{/form/items}'|"
+                        type="button">취소</button>
+            </div>
+        </div>
+
+    </form>
+
+</div> <!-- /container -->
+</body>
+</html>
